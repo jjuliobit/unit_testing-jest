@@ -1,0 +1,5 @@
+{
+    "jest.nodeENV": {
+        "NODE_OPTIONS": "--experimental-vm-modules"
+    }
+}
