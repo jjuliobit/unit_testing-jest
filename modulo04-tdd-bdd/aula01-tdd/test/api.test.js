@@ -70,8 +70,47 @@ describe('API  Users E2E Suite', () => {
         expect(user.category).toBe(expectedCategory)
     })
 
-    it.todo('should register a new user with adult category')
-    it.todo('should register a new user with senior category')
+    it('should register a new user with adult category', async () => {
+        const expectedCategory = 'adult'
+
+        jest.useFakeTimers({
+            now: new Date('2023-11-23T00:00')
+        })
+
+        const response = await createUser({
+            name: 'Xuxa da Silva',
+            birthDay: '1995-01-01'
+        })
+
+        expect(response.status).toEqual(201)
+        const result = await response.json()
+        expect(result.id).not.toBeUndefined()
+
+        const user = await findUserById(result.id)
+        expect(user.category).toBe(expectedCategory)
+    })
+
+
+    it('should register a new user with senior category', async () => {
+        jest.useFakeTimers({
+            now: new Date('2023-11-23T00:00')
+        })
+
+        const expectedCategory = 'elderly'
+
+        const response = await createUser({
+            name: 'Julia do maluco',
+            birthDay: '1971-01-01'
+        })
+
+        const result = await response.json()
+        expect(result.id).not.toBeUndefined();
+
+        const user = await findUserById(result.id)
+
+        expect(user.category).toEqual(expectedCategory)
+    })
+
     it('should throw an error when registering a under-age user', async function () {
         const response = await createUser({
             name: 'Xuxa da Silva',
